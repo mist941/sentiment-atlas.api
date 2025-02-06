@@ -6,5 +6,5 @@ handler = Mangum(app)
 
 
 @app.get("/")
-async def root():
+def read_root():
     return {"message": "Sentiment Atlas API"}
