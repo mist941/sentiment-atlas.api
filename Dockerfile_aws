@@ -1,9 +1,0 @@
-FROM public.ecr.aws/lambda/python:latest
-
-COPY requirements.txt ./
-COPY app ./app
-COPY main.py ./
-
-RUN pip install --no-cache-dir -r requirements.txt
-
-CMD ["main.handler"]
