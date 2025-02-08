@@ -8,24 +8,7 @@ Resources:
     Properties:
       Handler: api_function.main.handler
       Runtime: python3.13
-      CodeUri: .
+      CodeUri: ./api_function
       Timeout: 10
-      Events:
-        ApiEvent:
-          Type: Api
-          Properties:
-            Path: /data
-            Method: get
-
-  # ScheduledFunction:
-  #   Type: AWS::Serverless::Function
-  #   Properties:
-  #     Handler: scheduled_function.main.handler
-  #     Runtime: python3.13
-  #     CodeUri: .
-  #     Timeout: 10
-  #     Events:
-  #       ScheduledEvent:
-  #         Type: Schedule
-  #         Properties:
-  #           Schedule: rate(1 hour)
+      FunctionUrlConfig:
+        AuthType: NONE
