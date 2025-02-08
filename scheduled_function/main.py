@@ -1,7 +1,7 @@
 import json
 
 
-def handler(event, exec):
+def handler(event, context):
     path = event.get("rawPath", "")
     method = event.get("requestContext", {}).get("http", {}).get("method", "")
 
