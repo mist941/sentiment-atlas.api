@@ -1,7 +1,7 @@
 import json
 
 
-def lambda_handler(event, context):
+def lambda_handler(event):
     path = event.get("rawPath", "")
     method = event.get("requestContext", {}).get("http", {}).get("method", "")
 
