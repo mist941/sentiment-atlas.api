@@ -18,9 +18,4 @@ Resources:
        Handler: main.handler
        Runtime: python3.13
        CodeUri: ./collect_data_function
-       Timeout: 300
-       Events:
-         ScheduledEvent:
-           Type: Schedule
-           Properties:
-             Schedule: rate(3 hour)      
+       Timeout: 300    
