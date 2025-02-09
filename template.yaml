@@ -11,4 +11,16 @@ Resources:
       CodeUri: ./api_function
       Timeout: 10
       FunctionUrlConfig:
-        AuthType: NONE
+        AuthType: NONE    
+  CollectDataFunction:
+     Type: AWS::Serverless::Function
+     Properties:
+       Handler: main.handler
+       Runtime: python3.13
+       CodeUri: ./collect_data_function
+       Timeout: 300
+       Events:
+         ScheduledEvent:
+           Type: Schedule
+           Properties:
+             Schedule: rate(3 hour)      
