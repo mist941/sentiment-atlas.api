@@ -11,6 +11,7 @@ load_dotenv()
 
 secret_name = os.getenv('SECRET_NAME')
 region_name = os.getenv('REGION_NAME')
+table_name = os.getenv('TABLE_NAME')
 
 session = boto3.session.Session()
 client = session.client(service_name='secretsmanager', region_name=region_name)
@@ -29,7 +30,7 @@ with open('countries.json', 'r') as file:
     countries = json.load(file)
 
 dynamodb = boto3.resource('dynamodb', region_name=region_name)
-table = dynamodb.Table('SentimentData')
+table = dynamodb.Table(table_name)
 
 
 def collect_analyze_and_save_sentiment(country):
