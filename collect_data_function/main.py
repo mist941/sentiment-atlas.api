@@ -29,7 +29,7 @@ table = dynamodb.Table('SentimentData')
 
 def collect_analyze_and_save_sentiment(country):
     try:
-        query = country.country_name
+        query = country['country_name']
         subreddit = reddit.subreddit('all')
         posts = subreddit.search(query, limit=100)
         
@@ -47,7 +47,8 @@ def collect_analyze_and_save_sentiment(country):
         
         table.put_item(
             Item={
-                'country': country.country_id,
+                'country': country['country_id'],
+                'country_name': country['country_name'],
                 'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
                 'average_sentiment': average_sentiment_decimal
             }
