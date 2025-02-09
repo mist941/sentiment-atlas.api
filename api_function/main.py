@@ -45,6 +45,3 @@ def handler(event, context):
             },
             "body": json.dumps({"error": "Not Found"})
         }
-
-
-handler(None, None)
