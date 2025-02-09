@@ -4,9 +4,14 @@ import boto3
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
+from dotenv import load_dotenv
+import os
 
-secret_name = "sentiment_atlas"
-region_name = "us-east-1"
+load_dotenv()
+
+secret_name = os.getenv('SECRET_NAME')
+region_name = os.getenv('REGION_NAME')
+
 session = boto3.session.Session()
 client = session.client(service_name='secretsmanager', region_name=region_name)
 secret_value = json.loads(client.get_secret_value(SecretId=secret_name)['SecretString'])

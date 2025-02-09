@@ -1,3 +1,4 @@
 praw
 vaderSentiment
 boto3
+python-dotenv
