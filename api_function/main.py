@@ -20,13 +20,12 @@ def handler(event, context):
         try:
             response = table.scan()
             data = response.get('Items', [])
-            print(data)
             return {
                 "statusCode": 200,
                 "headers": {
                     "Content-Type": "application/json"
                 },
-                "body": json.dumps({"data": data})
+                "body": json.dumps(data, default=str)
             }
         except Exception as e:
             return {
