@@ -72,6 +72,3 @@ def collect_analyze_and_save_sentiment(country):
 def handler(event, context):
     for country in countries:
         collect_analyze_and_save_sentiment(country)
-
-
-handler(None, None)
