@@ -52,14 +52,19 @@ def collect_analyze_and_save_sentiment(country):
         average_sentiment_decimal = Decimal(str(average_sentiment)).quantize(
             Decimal('0.0001'), rounding=ROUND_HALF_UP)
 
-        table.put_item(
-            Item={
-                'country': country['country_id'],
-                'country_name': country['country_name'],
-                'date': datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                'average_sentiment': average_sentiment_decimal
-            })
-
+        table.update_item(Key={'country': country['country_id']},
+                          UpdateExpression="""
+                            SET country_name = :name,
+                                #dt = :date,
+                                average_sentiment = :sentiment
+                            """,
+                          ExpressionAttributeNames={'#dt': 'date'},
+                          ExpressionAttributeValues={
+                              ':name': country['country_name'],
+                              ':date':
+                              datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+                              ':sentiment': average_sentiment_decimal
+                          })
     except Exception as e:
         print(f"Error processing {country}: {e}")
 
@@ -67,3 +72,6 @@ def collect_analyze_and_save_sentiment(country):
 def handler(event, context):
     for country in countries:
         collect_analyze_and_save_sentiment(country)
+
+
+handler(None, None)
