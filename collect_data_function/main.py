@@ -6,6 +6,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
 from dotenv import load_dotenv
 import os
+import concurrent.futures
 
 load_dotenv()
 
@@ -51,7 +52,6 @@ def collect_analyze_and_save_sentiment(country):
             average_sentiment = sum(sentiments) / len(sentiments)
         average_sentiment_decimal = Decimal(str(average_sentiment)).quantize(
             Decimal('0.0001'), rounding=ROUND_HALF_UP)
-
         table.update_item(Key={'country': country['country_id']},
                           UpdateExpression="""
                             SET country_name = :name,
@@ -70,5 +70,5 @@ def collect_analyze_and_save_sentiment(country):
 
 
 def handler(event, context):
-    for country in countries:
-        collect_analyze_and_save_sentiment(country)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(collect_analyze_and_save_sentiment, countries)
