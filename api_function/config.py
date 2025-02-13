@@ -14,8 +14,9 @@ config = {
         "table_name": table_name
     },
     "cors": {
-        "allowed_origin": "https://sentiment-atlas.vercel.app",
-        "allowed_methods": "OPTIONS, GET",
-        "allowed_headers": "Content-Type"
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://sentiment-atlas.vercel.app",
+        "Access-Control-Allow-Methods": "OPTIONS, GET",
+        "Access-Control-Allow-Headers": "Content-Type"
     }
 }
