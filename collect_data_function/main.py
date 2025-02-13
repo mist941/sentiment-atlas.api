@@ -1,37 +1,36 @@
-import praw
-import json
-import boto3
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
-from dotenv import load_dotenv
-import os
-import concurrent.futures
+from config import config
+import concurrent
+import praw
+import boto3
+import json
 
-load_dotenv()
 
-secret_name = os.getenv('SECRET_NAME')
-region_name = os.getenv('REGION_NAME')
-table_name = os.getenv('TABLE_NAME')
+def get_reddit_client():
+    return praw.Reddit(client_id=config["reddit"]["client_id"],
+                       client_secret=config["reddit"]["client_secret"],
+                       user_agent=config["reddit"]["user_agent"],
+                       username=config["reddit"]["username"],
+                       password=config["reddit"]["password"])
 
-session = boto3.session.Session()
-client = session.client(service_name='secretsmanager', region_name=region_name)
-secret_value = json.loads(
-    client.get_secret_value(SecretId=secret_name)['SecretString'])
 
-reddit = praw.Reddit(client_id=secret_value['client_id'],
-                     client_secret=secret_value['client_secret'],
-                     user_agent=secret_value['user_agent'],
-                     username=secret_value['username'],
-                     password=secret_value['password'])
+def get_dynamodb_table():
+    dynamodb = boto3.resource("dynamodb",
+                              region_name=config["aws"]["region_name"])
+    return dynamodb.Table(config["aws"]["table_name"])
 
+
+def load_countries():
+    with open('countries.json', 'r') as file:
+        return json.load(file)
+
+
+reddit = get_reddit_client()
+table = get_dynamodb_table()
 analyzer = SentimentIntensityAnalyzer()
-
-with open('countries.json', 'r') as file:
-    countries = json.load(file)
-
-dynamodb = boto3.resource('dynamodb', region_name=region_name)
-table = dynamodb.Table(table_name)
+countries = load_countries()
 
 
 def collect_analyze_and_save_sentiment(country):
@@ -40,18 +39,18 @@ def collect_analyze_and_save_sentiment(country):
         subreddit = reddit.subreddit('all')
         posts = subreddit.search(query, limit=100)
 
-        sentiments = []
-        for post in posts:
-            content = post.title + ' ' + post.selftext
-            sentimentCompound = analyzer.polarity_scores(content)['compound']
-            sentiments.append(sentimentCompound)
+        sentiments = [
+            analyzer.polarity_scores(post.title + ' ' +
+                                     post.selftext)['compound']
+            for post in posts
+        ]
 
-        if len(sentiments) == 0:
-            average_sentiment = 0
-        else:
-            average_sentiment = sum(sentiments) / len(sentiments)
+        average_sentiment = sum(sentiments) / len(
+            sentiments) if sentiments else 0
+
         average_sentiment_decimal = Decimal(str(average_sentiment)).quantize(
             Decimal('0.0001'), rounding=ROUND_HALF_UP)
+        print(f"{country['country_name']}: {average_sentiment_decimal}")
         table.update_item(Key={'country': country['country_id']},
                           UpdateExpression="""
                             SET country_name = :name,
@@ -70,5 +69,5 @@ def collect_analyze_and_save_sentiment(country):
 
 
 def handler(event, context):
-    with concurrent.futures.ThreadPoolExecutor() as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(collect_analyze_and_save_sentiment, countries)
