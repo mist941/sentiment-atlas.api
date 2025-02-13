@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-region_name = os.getenv("REGION_NAME", "us-east-1")
-table_name = os.getenv("TABLE_NAME", "sentiment_data")
+region_name = os.getenv("REGION_NAME")
+table_name = os.getenv("TABLE_NAME")
 
 config = {
     "aws": {
