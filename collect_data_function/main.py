@@ -50,7 +50,7 @@ def collect_analyze_and_save_sentiment(country):
 
         average_sentiment_decimal = Decimal(str(average_sentiment)).quantize(
             Decimal('0.0001'), rounding=ROUND_HALF_UP)
-        print(f"{country['country_name']}: {average_sentiment_decimal}")
+
         table.update_item(Key={'country': country['country_id']},
                           UpdateExpression="""
                             SET country_name = :name,
