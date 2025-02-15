@@ -1,18 +1,10 @@
-import os
 import json
 import boto3
-from dotenv import load_dotenv
-
-load_dotenv()
-
-secret_name = os.getenv('SECRET_NAME')
-region_name = os.getenv('REGION_NAME')
-table_name = os.getenv('TABLE_NAME')
 
 session = boto3.session.Session()
-client = session.client(service_name='secretsmanager', region_name=region_name)
+client = session.client(service_name='secretsmanager', region_name='us-east-1')
 secret_value = json.loads(
-    client.get_secret_value(SecretId=secret_name)['SecretString'])
+    client.get_secret_value(SecretId='sentiment_atlas')['SecretString'])
 
 config = {
     "reddit": {
@@ -23,7 +15,7 @@ config = {
         "password": secret_value["password"],
     },
     "aws": {
-        "region_name": region_name,
-        "table_name": table_name
+        "region_name": 'us-east-1',
+        "table_name": 'SentimentData'
     }
 }

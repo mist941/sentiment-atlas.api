@@ -1,15 +1,7 @@
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-region_name = os.getenv("REGION_NAME")
-table_name = os.getenv("TABLE_NAME")
-
 config = {
     "aws": {
-        "region_name": region_name,
-        "table_name": table_name
+        "region_name": 'us-east-1',
+        "table_name": 'SentimentData'
     },
     "cors": {
         "Content-Type": "application/json",
