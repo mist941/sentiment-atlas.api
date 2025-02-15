@@ -71,6 +71,3 @@ def collect_analyze_and_save_sentiment(country):
 def handler(event, context):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(collect_analyze_and_save_sentiment, countries)
-
-
-handler(None, None)
