@@ -1,6 +1,6 @@
 import json
 import boto3
-from config import config
+from .config import config
 
 dynamodb = boto3.resource("dynamodb", region_name=config["aws"]["region_name"])
 table = dynamodb.Table(config["aws"]["table_name"])
