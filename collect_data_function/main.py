@@ -36,7 +36,7 @@ countries = load_countries()
 def collect_analyze_and_save_sentiment(country):
     try:
         query = country['country_name']
-        subreddit = reddit.subreddit('all')
+        subreddit = reddit.subreddit('news')
         posts = subreddit.search(query, limit=100)
 
         sentiments = [
@@ -71,3 +71,6 @@ def collect_analyze_and_save_sentiment(country):
 def handler(event, context):
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         executor.map(collect_analyze_and_save_sentiment, countries)
+
+
+handler(None, None)
