@@ -10,6 +10,7 @@ Sentiment Atlas API is a serverless backend for collecting, analyzing, and provi
 - **AWS API Gateway** – Routing requests to AWS Lambda.
 - **AWS Secrets Manager** – Storing API credentials securely.
 - **AWS SAM (Serverless Application Model)** – Infrastructure as code tool for managing AWS resources.
+- **AWS CloudFormation** – Automating infrastructure deployment and management.
 - **GitHub Actions** – CI/CD for testing and deployment.
 
 ### Key Technologies
