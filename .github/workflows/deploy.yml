@@ -32,6 +32,13 @@ jobs:
           cd collect_data_function
           pip install -r requirements.txt
           cd ..
+
+      - name: Set fake AWS credentials
+        run: |
+          echo "AWS_ACCESS_KEY_ID=fakeaccesskey" >> $GITHUB_ENV
+          echo "AWS_SECRET_ACCESS_KEY=fakesecretkey" >> $GITHUB_ENV
+          echo "AWS_DEFAULT_REGION=us-east-1" >> $GITHUB_ENV
+
       - name: Run tests
         run: |
-          pytest tests/
+          pytest tests/ --disable-warnings
