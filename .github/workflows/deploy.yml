@@ -63,12 +63,11 @@ jobs:
         run: |
           curl -Lo aws-sam-cli-linux.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
           unzip aws-sam-cli-linux.zip -d sam-installation
-          sudo ./sam-installation/install
+          sudo ./sam-installation/install --update
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
           cd api_function
           pip install -r requirements.txt
           cd ..
