@@ -6,6 +6,7 @@ import concurrent
 import praw
 import boto3
 import json
+import os
 
 
 def get_reddit_client():
@@ -23,7 +24,9 @@ def get_dynamodb_table():
 
 
 def load_countries():
-    with open('countries.json', 'r') as file:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_dir, "countries.json")
+    with open(file_path, "r") as file:
         return json.load(file)
 
 
