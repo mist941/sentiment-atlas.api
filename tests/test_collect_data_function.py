@@ -1,3 +1,4 @@
+import os
 import pytest
 import json
 import boto3
@@ -46,6 +47,11 @@ def test_load_countries(mock_countries_file):
 
 @mock_aws
 def test_collect_analyze_and_save_sentiment():
+    boto3.setup_default_session(
+        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
+        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+        region_name=os.getenv("AWS_REGION"))
+
     dynamodb = boto3.resource("dynamodb", region_name="us-east-1")
 
     table = dynamodb.create_table(
