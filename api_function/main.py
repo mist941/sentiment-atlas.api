@@ -1,6 +1,18 @@
 import json
 import boto3
-from .config import config
+
+config = {
+    "aws": {
+        "region_name": 'us-east-1',
+        "table_name": 'SentimentData'
+    },
+    "cors": {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": "https://sentiment-atlas.vercel.app",
+        "Access-Control-Allow-Methods": "OPTIONS, GET",
+        "Access-Control-Allow-Headers": "Content-Type"
+    }
+}
 
 dynamodb = boto3.resource("dynamodb", region_name=config["aws"]["region_name"])
 table = dynamodb.Table(config["aws"]["table_name"])

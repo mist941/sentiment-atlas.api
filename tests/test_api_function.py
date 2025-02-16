@@ -1,7 +1,6 @@
 import json
 from unittest.mock import patch
-from api_function.main import create_response, handler
-from api_function.config import config
+from api_function.main import create_response, handler, config
 
 
 def test_create_response():
