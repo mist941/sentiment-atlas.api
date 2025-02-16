@@ -1,4 +1,4 @@
-# Sentiment Atlas API
+# Sentiment Atlas - Backend
 
 Sentiment Atlas API is a serverless backend for collecting, analyzing, and providing sentiment data across different countries. It is implemented using **AWS Lambda** and **Python 3.13**.
 
@@ -20,7 +20,7 @@ Sentiment Atlas API is a serverless backend for collecting, analyzing, and provi
 - **boto3** – SDK for AWS services.
 - **Pytest and Moto** – Unit testing and AWS service mocking.
 
-## 🌟 Features
+## 🚀 Features
 - **Real-time sentiment analysis** – Fetch and analyze sentiment data from Reddit posts.
 - **Scalable and serverless** – Uses AWS Lambda for efficient, cost-effective scaling.
 - **Automated deployment** – Managed via GitHub Actions.
@@ -61,6 +61,12 @@ build artifacts
 │   │── countries.json       # Countries for analysis
 │── tests/                   # Unit tests for API and data collection functions
 │── template.yaml            # AWS SAM template for deployment
+```
+
+## 🔬 Testing
+Run unit tests using:
+```sh 
+pytest tests/ --disable-warnings
 ```
 
 ## 🎨 Deployment
