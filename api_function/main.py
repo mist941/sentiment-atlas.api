@@ -30,4 +30,4 @@ def handler(event, context):
             return create_response(500, {"error": str(e)})
 
     else:
-        create_response(404, {"error": "Not Found"})
+        return create_response(404, {"error": "Not Found"})
