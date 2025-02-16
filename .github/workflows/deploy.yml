@@ -61,10 +61,22 @@ jobs:
           unzip awscliv2.zip
           sudo ./aws/install --update
 
+      - name: Add AWS CLI to PATH
+        run: |
+          echo "Adding AWS CLI to PATH"
+          echo "/usr/local/bin" >> $GITHUB_PATH
+
       - name: Verify AWS CLI
         run: |
           echo "Checking AWS CLI version..."
           aws --version || echo "AWS CLI is not installed correctly!"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Installing the AWS SAM CLI
         run: |
@@ -81,15 +93,6 @@ jobs:
           cd collect_data_function
           pip install -r requirements.txt
           cd ..
-
-      - name: Authorization in AWS
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID && \
-          aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY && \
-          aws configure set region $AWS_REGION
 
       - name: Building a SAM package
         run: sam build
