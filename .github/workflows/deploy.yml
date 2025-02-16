@@ -103,4 +103,4 @@ jobs:
         run: sam build
 
       - name: Deploy AWS Lambda via SAM
-        run: sam deploy --stack-name my-lambda-stack
+        run: sam deploy --stack-name my-lambda-stack --resolve-s3 --capabilities CAPABILITY_IAM
