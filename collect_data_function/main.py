@@ -1,7 +1,7 @@
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
-from config import config
+from .config import config
 import concurrent
 import praw
 import boto3
